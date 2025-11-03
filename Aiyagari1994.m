@@ -19,8 +19,8 @@ addpath(genpath('C:\Users\aledi\OneDrive\Documents\GitHub\VFIToolkit-matlab'))
 
 % Options for VFI
 vfoptions.verbose       = 0;
-vfoptions.lowmemory     = 1;
-vfoptions.howardssparse = 1;
+vfoptions.lowmemory     = 0;
+vfoptions.howardssparse = 0;
 
 % Size of the grids
 n_k = 1200;
