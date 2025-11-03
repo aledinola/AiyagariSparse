@@ -19,6 +19,7 @@ addpath(genpath('C:\Users\aledi\OneDrive\Documents\GitHub\VFIToolkit-matlab'))
 
 % Options for VFI
 vfoptions.verbose       = 0;
+vfoptions.lowmemory     = 1;
 vfoptions.howardssparse = 1;
 
 % Size of the grids
@@ -114,44 +115,6 @@ Params.r=p_eqm.r; % Put the equilibrium interest rate into Params so we can use 
 Params.w=(1-Params.alpha)*((Params.r+Params.delta)/Params.alpha)^(Params.alpha/(Params.alpha-1));
 
 fprintf('Value function iteration \n')
-
-% After creating ReturnMatrix, ValueFnIter_Case1 calls ValueFnIter_nod_raw 
-% at lines 479-483. I propose to add vfoptions.howardssparse, which applies 
-% to the case howardsgreedy=0. 
-% This block of code is replaced by
-% if vfoptions.howardsgreedy==1
-%    [VKron,Policy]=ValueFnIter_nod_HowardGreedy_raw(V0, N_a, N_z, pi_z, DiscountFactorParamsVec, ReturnMatrix, vfoptions.maxhowards, vfoptions.tolerance, vfoptions.maxiter); %  a_grid, z_grid,
-% elseif vfoptions.howardsgreedy==0
-%    [VKron,Policy]=ValueFnIter_nod_raw(V0, N_a, N_z, pi_z, DiscountFactorParamsVec, ReturnMatrix, vfoptions.howards, vfoptions.maxhowards, vfoptions.tolerance, vfoptions.maxiter); %  a_grid, z_grid,
-% end
-% this new block
-% if vfoptions.howardsgreedy==1
-%    [VKron,Policy]=ValueFnIter_nod_HowardGreedy_raw(V0, N_a, N_z, pi_z, DiscountFactorParamsVec, ReturnMatrix, vfoptions.maxhowards, vfoptions.tolerance, vfoptions.maxiter); %  a_grid, z_grid,
-% elseif vfoptions.howardsgreedy==0
-%    if vfoptions.howardssparse==0
-%       [VKron,Policy]=ValueFnIter_nod_raw(V0, N_a, N_z, pi_z, DiscountFactorParamsVec, ReturnMatrix, vfoptions.howards, vfoptions.maxhowards, vfoptions.tolerance, vfoptions.maxiter);
-%    elseif vfoptions.howardssparse==1
-%       [VKron,Policy]=ValueFnIter_nod_raw_sparse(V0, N_a, N_z, pi_z, DiscountFactorParamsVec, ReturnMatrix, vfoptions.howards, vfoptions.maxhowards, vfoptions.tolerance, vfoptions.maxiter);
-%    end
-% end
-% In ValueFnIter_Refine, please change this block of code:
-% if vfoptions.howardsgreedy==1
-%     [VKron,Policy_a]=ValueFnIter_nod_HowardGreedy_raw(V0, N_a, N_z, pi_z, DiscountFactorParamsVec, ReturnMatrix, vfoptions.maxhowards, vfoptions.tolerance,vfoptions.maxiter);
-% elseif vfoptions.howardsgreedy==0
-%     [VKron,Policy_a]=ValueFnIter_nod_raw(V0, N_a, N_z, pi_z, DiscountFactorParamsVec, ReturnMatrix, vfoptions.howards, vfoptions.maxhowards, vfoptions.tolerance,vfoptions.maxiter);
-% end
-% with this one:
-% if vfoptions.howardsgreedy==1
-%     [VKron,Policy_a]=ValueFnIter_nod_HowardGreedy_raw(V0, N_a, N_z, pi_z, DiscountFactorParamsVec, ReturnMatrix, vfoptions.maxhowards, vfoptions.tolerance,vfoptions.maxiter);
-% elseif vfoptions.howardsgreedy==0
-%     %[VKron,Policy_a]=ValueFnIter_nod_raw(V0, N_a, N_z, pi_z, DiscountFactorParamsVec, ReturnMatrix, vfoptions.howards, vfoptions.maxhowards, vfoptions.tolerance,vfoptions.maxiter);
-%     if vfoptions.howardssparse==0
-%         [VKron,Policy_a]=ValueFnIter_nod_raw(V0, N_a, N_z, pi_z, DiscountFactorParamsVec, ReturnMatrix, vfoptions.howards, vfoptions.maxhowards, vfoptions.tolerance, vfoptions.maxiter);
-%     elseif vfoptions.howardssparse==1
-%         [VKron,Policy_a]=ValueFnIter_nod_raw_sparse(V0, N_a, N_z, pi_z, DiscountFactorParamsVec, ReturnMatrix, vfoptions.howards, vfoptions.maxhowards, vfoptions.tolerance, vfoptions.maxiter);
-%     end
-% end
-
 
 tic
 [V,Policy]=ValueFnIter_Case1(n_d,n_a,n_z,d_grid,a_grid,z_grid, pi_z, ReturnFn, Params, DiscountFactorParamNames, [], vfoptions);
